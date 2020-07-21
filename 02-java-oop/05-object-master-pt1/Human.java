@@ -1,8 +1,19 @@
 public class Human {
-    int strength = 3;
-    int stealth = 3;
-    int intelligence = 3;
-    int health = 100;
+    int strength;
+    int stealth;
+    int intelligence;
+    int health;
+
+    public Human(){
+        this(3, 3, 3, 100);
+    }
+
+    public Human(int strength, int stealth, int intelligence, int health){
+        this.strength = strength;
+        this.stealth = stealth;
+        this.intelligence = intelligence;
+        this.health = health;
+    }
 
     public void attack(Human otherHuman) {
         otherHuman.health -= strength;
