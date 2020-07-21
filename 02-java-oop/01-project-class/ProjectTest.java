@@ -10,5 +10,8 @@ public class ProjectTest {
         person2.setDescription("The Science Kid");;
         String person2Name = person2.getName();
         String person2Description = person2.getDescription();
+        System.out.println(person1Name + " " + person1Description);
+        System.out.println(person2Name + " " + person2Description);
+        System.out.println(person1.elevatorPitch());
     }
 }
