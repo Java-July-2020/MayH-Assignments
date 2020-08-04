@@ -3,9 +3,9 @@
 <html>
 <head>
         <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="js/timealert.js"> </script>
 </head>
 <body>
-        <a href="/date"> <h1>Date Template</h1> </a> 
-        <a href="/time"> <h1>Time Template</h1> </a> 
+        <h3 class="time" ><c:out value="${todaysTime}"/></h3>
 </body>
 </html>

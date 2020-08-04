@@ -1,6 +1,0 @@
-
-
-
-
-
-alert("Hello World");

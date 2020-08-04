@@ -1,5 +1,29 @@
 body {
-	background-color: blue;
-	color: white;
+	background-color: yellow;
+	text-align: center;
 }
 
+/* unvisited link */
+a:link {
+  color: white;
+}
+
+/* visited link */
+a:visited {
+  color: black;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* date class */
+.date {
+	color: green;
+}
+
+/* time class */
+.time {
+	color: red;
+}
