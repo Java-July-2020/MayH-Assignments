@@ -1,0 +1,10 @@
+body {
+  text-align: center;
+}
+
+
+form span {
+	display: block;
+	color: red;
+	font-weight: bold;
+}
