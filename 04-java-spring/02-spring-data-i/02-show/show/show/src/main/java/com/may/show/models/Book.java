@@ -26,19 +26,19 @@ public class Book {
     private Long id;
     
     @Column(nullable = false)    
-    @Size(min = 5, max = 200) // adds validation that the column must be in the specified range
+//    @Size(min = 5, max = 200) // adds validation that the column must be in the specified range
     private String title;
     
     @Column(nullable = false)    
-    @Size(min = 5, max = 200)
+//    @Size(min = 5, max = 200)
     private String description;
     
     @Column(nullable = false)    
-    @Size(min = 3, max = 40)
+//    @Size(min = 3, max = 40)
     private String language;
     
     @Column(nullable = false)
-    @Min(100) // adds validation that the column must be at least the specified value
+//    @Min(100) // adds validation that the column must be at least the specified value
     private int numberOfPages;
     
     @Column(updatable=false) // This will not allow the createdAt column to be updated after creation
@@ -51,6 +51,9 @@ public class Book {
 
     
     // II) Class Constructor Methods
+    
+    public Book() {
+    }
 
     public static Book newEnglishBook(String title, String desc, int pages) {
     	return new Book(title, desc, "en", pages);
@@ -94,4 +97,12 @@ public class Book {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
+
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", description=" + description + ", language=" + language
+				+ ", numberOfPages=" + numberOfPages + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+	}
+    
+       
 }

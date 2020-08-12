@@ -1,5 +1,7 @@
 package com.may.show.controllers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,16 +14,27 @@ import com.may.show.services.BookService;
 @RestController 
 public class BookApi {
     private final BookService bookService;
-    public Books(BookService bookService){
+    
+    public BookApi(BookService bookService){
         this.bookService = bookService;
     }
+    
     @RequestMapping("/api/books")
     public String index() {
-        return bookService.allBooks();
+        return bookService
+        		.allBooks()
+        		.stream()
+        		.map(Book::toString)
+        		.collect(Collectors.joining(",\n"));
     }
     
     @RequestMapping(value="/api/books", method=RequestMethod.POST)
-    public Book create(@RequestParam(value="title") String title, @RequestParam(value="description") String desc, @RequestParam(value="language") String lang, @RequestParam(value="pages") Integer numOfPages) {
+    // not the best practice to use RequestParam for fields that can be really long such as the description
+    public Book create(
+    		@RequestParam(value="title") String title, 
+    		@RequestParam(value="description") String desc, 
+    		@RequestParam(value="language") String lang, 
+    		@RequestParam(value="pages") Integer numOfPages) {
         Book book = new Book(title, desc, lang, numOfPages);
         return bookService.createBook(book);
     }
