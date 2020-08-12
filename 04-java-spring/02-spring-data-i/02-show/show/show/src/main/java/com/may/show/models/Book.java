@@ -26,7 +26,7 @@ public class Book {
     private Long id;
     
     @Column(nullable = false)    
-//    @Size(min = 5, max = 200) // adds validation that the column must be in the specified range
+// @Size(min = 5, max = 200) // adds validation that the column must be in the specified range
     private String title;
     
     @Column(nullable = false)    

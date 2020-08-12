@@ -1,10 +1,8 @@
 package com.may.show.services;
 
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -13,14 +11,7 @@ import com.may.show.repositories.BookRepository;
 
 @Service
 public class BookService {
-	// initialize the books variable with values
-	private static final List<Book> EXTRA_BOOKS = Arrays.asList(
-			new Book("Harry Potter and the Sorcerer's Stone", "A boy wizard saving the world", "english", 309),
-			new Book("The Great Gatsby", "The story primarily concerns the young and mysterious millionaire Jay Gatsby",
-					"english", 180),
-			new Book("Moby Dick", "The saga of Captain Ahab", "english", 544),
-			new Book("Don Quixote", "Life of a retired country gentleman", "english", 150),
-			new Book("The Odyssey", "Ancient Greek epic poem", "english", 475));
+	
 	// adding the book repository as a dependency
 	private final BookRepository bookRepository;
 
@@ -30,9 +21,7 @@ public class BookService {
 
 	// returns all the books
 	public List<Book> allBooks() {
-        return Stream
-        		.concat(bookRepository.findAll().stream(), EXTRA_BOOKS.stream())
-        		.collect(Collectors.toList());
+        return bookRepository.findAll();
     }
 
 	// creates a book
@@ -52,5 +41,13 @@ public class BookService {
 			throw new IllegalArgumentException("Invalid book index");
 		}
 		return books.get(index);
+	}
+	
+    public Book updateBook(Long id, Book updatedBook) {
+		return this.bookRepository.save(updatedBook);
+    }
+    
+    public void deleteBook(Long id) {
+		this.bookRepository.deleteById(id);
 	}
 }
