@@ -22,4 +22,4 @@
         <form:input type="number" path="numberOfPages"/>
     </p>    
     <input type="submit" value="Submit"/>
-</form:form>   
+</form:form>    
