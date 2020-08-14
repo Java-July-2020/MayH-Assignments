@@ -1,15 +1,17 @@
 package com.may.lookify.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.may.lookify.models.Lookify;
 import com.may.lookify.services.LookifyService;
@@ -17,64 +19,73 @@ import com.may.lookify.services.LookifyService;
 @Controller
 public class LookifyController {
 	
+	// create a private Service
 	private LookifyService songService;
 	
 	public LookifyController(LookifyService songService) {
 		this.songService = songService;
 	}
 	
+	// Landing Page
 	@RequestMapping("/")
 	public String index() {
 		return "index.jsp";
 	}
 	
+	// Dashboard
 	@RequestMapping("/dashboard")
 	public String dashboard(Model viewModel) {
-		List<Lookify> songs = this.songService.getAllSongs();
+		List<Lookify> songs = songService.getAllSongs();
+		System.out.println("SONGS: "+ songs);
 		viewModel.addAttribute("songs", songs);
 		return "dashboard.jsp";
 	}
+
+	// Show detail page of the song clicked
+	@RequestMapping("/songs/{id}")
+	public String Show(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("song", songService.findSong(id));
+		return "/show.jsp";
+	}
 	
+	// Show songs containing user's search query
+	@RequestMapping("/songs/search")
+	public String Search(@RequestParam("artist") String artist, Model model) {
+		model.addAttribute("songs",	songService.songsContainingArtist(artist));
+		model.addAttribute("artist", artist);
+		return "/searched.jsp";
+	}
+	
+	// Page that allows user to create new song 
 	@RequestMapping("/songs/new")
-	public String newSong() {
-		return "newSong.jsp";
+	public String New(@ModelAttribute("song") Lookify song) {
+		return "/newSong.jsp";
 	}
 	
-	@RequestMapping(value="/songs", method=RequestMethod.POST)  
-	public String newSongAdded(
-			@RequestParam("title") String title, 
-			@RequestParam("artist") String artist, 
-			@RequestParam("rating") int rating,
-			RedirectAttributes redirectAttributes) {
-		ArrayList<String> errors = new ArrayList<String>();
-		if(title.equals("")) {
-			// Flag Bad Validation
-			errors.add("Hey there, you forgot to add the title of the song.");
+	// If request param has errors, reload the page. Otherwise, redirect to the dashboard.
+	@RequestMapping(value="/songs", method=RequestMethod.POST)
+	public String Create(@Valid @ModelAttribute("song") Lookify song, BindingResult result) {
+		if(result.hasErrors()) {
+			return "/newSong.jsp";
+		} else {
+			songService.createSong(song);
+			return "redirect:/dashboard";
 		}
-		if(artist.equals("")) {
-			errors.add("Who sang this song? Make sure to add the artist's name!");
-		}
-		if(rating < 0 || rating > 10) {
-			errors.add("Please enter a rating between 1-10.");
-		}
-		if(errors.size() > 0) {
-			for(String e: errors) {
-				redirectAttributes.addFlashAttribute("errors", e);
-			}
-			return "redirect:/songs/new";
-		}
-		// Add a new song to the database
-		this.songService.createNewSong(title, artist, rating);
-		return "newSong.jsp";
 	}
 	
-	//@RequestMapping(value="/songs/${id}", method=RequestMethod.DELETE)
-	//public String deleteSong(@PathVariable("id") Long id) {
-	//	this.songService.deleteSong(id);
-	//	return "redirect:/dashboard";
-	//}
+	// Page that shows the top ten songs in descending order by rating
+	@RequestMapping("/songs/topTen")
+	public String TopTen(Model model) {
+		model.addAttribute("songs", songService.topTenByRating());
+		return "topTenSongs.jsp";
+	}
 	
-	//create /songs/${id} to delete
+	// Delete song by id 
+	@RequestMapping(value="/songs/{id}", method=RequestMethod.DELETE)
+	public String deleteSong(@PathVariable("id") Long id) {
+		songService.deleteSong(id);
+	    return "redirect:/dashboard";
+	}
 	
-	
+
 }

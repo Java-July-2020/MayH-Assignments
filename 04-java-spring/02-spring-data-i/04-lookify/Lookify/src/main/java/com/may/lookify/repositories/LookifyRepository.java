@@ -8,5 +8,6 @@ import com.may.lookify.models.Lookify;
 
 public interface LookifyRepository extends CrudRepository<Lookify, Long>{
 	List<Lookify> findAll();
-	// List<Lookify> findByArtistContaining(String query);
+	List<Lookify> findTop10ByOrderByRatingDesc();
+	List<Lookify> findByArtistContaining(String query);
 }

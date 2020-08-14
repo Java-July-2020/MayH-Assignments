@@ -5,34 +5,25 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <title>Lookify</title>
 </head>
+
 <body>
 	<div class="container">
-		<nav>
-			<h3><a href="/songs/new">Add New</a> | <a href="/songs/topTen">Top Ten</a></h3>
-			<form action="/songs/search" class="float-right">
-				<input type="text" name="artist"/>
-				<button class="btn btn-primary">Search Artists</button>
-			</form>
-		</nav>
+		<h1>Top Ten Songs</h1>
+		<a class="float-right" href="/dashboard">Dashboard</a>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Title</th>
 					<th>Rating</th>
-					<th>Action</th>
+					<th>Title</th>
+					<th>Artist</th>
 				</tr>
 			</thead>
 			<tbody>
 			<c:forEach items="${ songs }" var="song">
 				<tr>
-					<td><a href="/songs/${ song.id }">${ song.title }</a></td>
 					<td>${ song.rating }</td>
-					<td>
-						<form action="/songs/${ song.id }" method="POST">
-							<input type="hidden" name="_method" value="delete">
-							<input class="btn btn-danger" type="submit" value="Delete">						
-						</form>
-					</td>
+					<td><a href="/songs/${ song.id }">${ song.title }</a></td>
+					<td>${ song.artist}</td>
 				</tr>
 			</c:forEach>
 			</tbody>
